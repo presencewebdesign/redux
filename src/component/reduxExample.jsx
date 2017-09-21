@@ -1,27 +1,43 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { compose, createStore } from 'redux';
 
-console.log("check");
-const reducer = (state = {name: 'Anonymous'}, action) => {
-    // state = state || {name: 'Anonymous'};
-    return state;
+console.log('Starting redux Example');
+
+const stateDefult = {
+        searchText: '',
+        showCompleted: false,
+        todos: []
 };
-const store = createStore(reducer);
-const currentState = store.getState();
+const reducer = (state = stateDefult, action) => {
+    switch (action.type) {
+        case 'CHANGE_SEARCH_TEXT':
+        return {
+            ...state,
+            searchText: action.searchText
+        };
+        default:
+        return state;
+    }
+};
 
-console.log('currentState', currentState);
+const store = createStore(reducer, compose(
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+));
 
-// const reduxState = {
-//     searchText: 'Dog',
-//     showCompleted: false,
-//     todos: [{
-//         id: '123',
-//         text: 'Walk the dog'
-//     }]
-// };
-// const action = {
-//     type: 'CHANGE_SEARCH_TEXT',
-//     searchText: 'something else'
-// }
+// Subscribe to changes
+store.subscribe(() => {
+    const state = store.getState();
+    console.log('Name is', state.name);
+});
 
-// console.log('Starting redux example');
+console.log('CurrentState', store.getState());
+
+store.dispatch({
+    type: 'CHANGE_SEARCH_TEXT',
+    searchText: 'dog'
+});
+
+store.dispatch({
+    type: 'CHANGE_SEARCH_TEXT',
+    name: 'Something else'
+});

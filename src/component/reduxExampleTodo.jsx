@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, createStore } from 'redux';
+import { compose, createStore, combineReducers } from 'redux';
 
 console.log('Starting redux Example Todo');
 
@@ -11,50 +11,100 @@ const stateDefult = {
     hobbies: [],
     movies: []
 };
-const reducer = (state = stateDefult, action) => {
+
+// const oldReducer = (state = stateDefult, action) => {
+//     switch (action.type) {
+//         case 'CHANGE_NAME':
+//             return {
+//                 ...state,
+//                 name: action.name
+//             };
+//         case 'ADD_HOBBY':
+//             return {
+//                 ...state,
+//                 hobbies: [
+//                     ...state.hobbies,
+//                     {
+//                         id: hobbyId++,
+//                         hobby: action.hobby
+//                     }
+//                 ]
+//             };
+//         case 'REMOVE_HOBBY':
+//             return {
+//                 ...state,
+//                 hobbies: state.hobbies.filter((hobby) => hobby.id !== action.id)
+//             };
+//         case 'ADD_MOVIE':
+//         return {
+//             ...state,
+//             movies: [
+//                 ...state.movies,
+//                 {
+//                     id: moveId++,
+//                     title: action.title,
+//                     genre: action.genre
+//                 }
+//             ]
+//         };
+//         case 'REMOVE_MOVIE':
+//         return {
+//             ...state,
+//             movies: state.movies.filter((movie) => movie.id !== action.id)
+//         };
+//     default:
+//         return state;
+//     }
+// };
+
+const nameReducer = (state = 'Anonymous', action) => {
     switch (action.type) {
         case 'CHANGE_NAME':
-            return {
-                ...state,
-                name: action.name
-            };
+            return action.name
+        default:
+            return state;
+    };
+};
+const hobbiesReducer = (state = [], action) => {
+    switch (action.type) {
         case 'ADD_HOBBY':
-            return {
+            return [
                 ...state,
-                hobbies: [
-                    ...state.hobbies,
-                    {
-                        id: hobbyId++,
-                        hobby: action.hobby
-                    }
-                ]
-            };
+                {
+                    id: hobbyId++,
+                    hobby: action.hobby
+                }
+            ];
         case 'REMOVE_HOBBY':
-            return {
-                ...state,
-                hobbies: state.hobbies.filter((hobby) => hobby.id !== action.id)
-            };
+                return state.filter((hobby) => hobby.id !== action.id)
+            default:
+                return state;
+        };
+};
+const moviesReducer = (state = [], action) => {
+    switch (action.type) {
         case 'ADD_MOVIE':
-        return {
-            ...state,
-            movies: [
-                ...state.movies,
+            return [
+                ...state,
                 {
                     id: moveId++,
                     title: action.title,
                     genre: action.genre
                 }
-            ]
-        };
+            ];
         case 'REMOVE_MOVIE':
-        return {
-            ...state,
-            movies: state.movies.filter((movie) => movie.id !== action.id)
+                return state.filter((movie) => movie.id !== action.id)
+            default:
+                return state;
         };
-    default:
-        return state;
-    }
 };
+
+var reducer = combineReducers({
+    name: nameReducer,
+    hobbies: hobbiesReducer,
+    movies: moviesReducer
+});
+
 const store = createStore(reducer, compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));

@@ -1,3 +1,86 @@
+// const state = [{
+//     name: 'James',
+//     age: 33,
+// }, {
+//     name:'Polly',
+//     age:27
+// }]
+
+// add person...
+
+// return [
+//     ...state,
+//     action.person,
+// ]
+
+// Add Person
+var personId = 1;
+export const personReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'ADD_PERSON':
+            return {
+                ...state,
+                [personId++]: {
+                    name: action.name,
+                    age: action.age,
+                    hobbies: [],
+                    movies: []
+                }
+            };
+        case 'CHANGE_NAME':
+            return {
+                ...state,
+                [action.id]: {
+                    name: action.name,
+                    age: action.age,
+                    hobbies: [],
+                    movies: []
+                }
+            };
+        case 'ADD_MOVIE':
+            return{
+                ...state,
+                [action.id]: {
+                    ...state[action.id],
+                    movies: [
+                        ...state[action.id].movies,
+                        action.movie
+                    ]
+                }
+            }
+        case 'REMOVE_MOVIE':
+            return{
+                ...state,
+                [action.id]: {
+                    ...state[action.id],
+                    movies: state[action.id].movies.filter((movie, index) => index !== action.movieId)
+                }
+            }
+        case 'ADD_HOBBY':
+            return{
+                ...state,
+                [action.id]: {
+                    ...state[action.id],
+                    hobbies: [
+                        ...state[action.id].hobbies,
+                        action.hobby
+                    ]
+                }
+            }
+        case 'REMOVE_HOBBY':
+            return{
+                ...state,
+                [action.id]: {
+                    ...state[action.id],
+                    hobbies: state[action.id].hobbies.filter((hobby, index) => index !== action.hobbyId)
+                }
+            }
+            default:
+            return state;
+    }
+};
+
+
 // Name reducer and action generators
 // ----------------
 export const nameReducer = (state = 'Anonymous', action) => {
@@ -8,25 +91,7 @@ export const nameReducer = (state = 'Anonymous', action) => {
             return state;
     };
 };
-// Hobbies reducer and action generators
-// ----------------
-var hobbyId = 1;
-export const hobbiesReducer = (state = [], action) => {
-    switch (action.type) {
-        case 'ADD_HOBBY':
-            return [
-                ...state,
-                {
-                    id: hobbyId++,
-                    hobby: action.hobby
-                }
-            ];
-        case 'REMOVE_HOBBY':
-                return state.filter((hobby) => hobby.id !== action.id)
-            default:
-                return state;
-        };
-};
+
 // Hobbies reducer and action generators
 // ----------------
 var movieId = 1;

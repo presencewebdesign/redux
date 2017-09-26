@@ -5,6 +5,8 @@ import * as actions from '../actions';
 import configureStore from '../store/configureStore';
 const store = configureStore();
 
+console.log('**** Starting REFACTORED REDUX example ****');
+
 // Subscribe to changes
 const unsubscribe = store.subscribe(() => {
     const state = store.getState();
@@ -26,11 +28,37 @@ store.dispatch(actions.fetchLocation());
 const currentState = store.getState();
 console.log('currentState', currentState);
 
-store.dispatch(actions.changeName('James'));
-store.dispatch(actions.addHobby('Running'));
-store.dispatch(actions.addHobby('Walking'));
-store.dispatch(actions.removeHobby(2));
-store.dispatch(actions.changeName('Polly'));
-store.dispatch(actions.addMovie('Mad Max', 'Action'));
-store.dispatch(actions.addMovie('Star Wars', 'Action'));
-store.dispatch(actions.removeMovie(1));
+store.dispatch(actions.addPerson({
+    name:'James',
+    age: '33'
+}));
+store.dispatch(actions.addPerson({
+    name:'Polly',
+    age: '30'
+}));
+store.dispatch({
+    type: 'ADD_HOBBY',
+    id: 2,
+    hobby: 'Walking'
+});
+store.dispatch({
+    type: 'ADD_MOVIE',
+    id: 1,
+    movie: 'Titanic'
+});
+store.dispatch({
+    type: 'REMOVE_HOBBY',
+    id: 2,
+    hobbyId: 0
+});
+store.dispatch({
+    type: 'REMOVE_MOVIE',
+    id: 1,
+    movieId: 0
+});
+
+store.dispatch({
+    type: 'CHANGE_NAME',
+    id: 1,
+    name: 'James Stevenson'
+});

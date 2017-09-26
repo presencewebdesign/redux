@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+
+export const addPerson = ({ name, age }) => {
+    return {
+        type: 'ADD_PERSON',
+        name,
+        age,
+    }
+};
+
 export const changeName = (name) => {
     return {
         type: 'CHANGE_NAME',
